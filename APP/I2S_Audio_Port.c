@@ -17,7 +17,7 @@
 #include <math.h>
 /* Private includes ----------------------------------------------------------*/
 #include "I2S_Audio_Port.h"
-#include "USB_Audio_Port.h"
+//#include "USB_Audio_Port.h"
 #include "Audio_Debug.h"
 #include "main.h"
 /* Use C compiler ------------------------------------------------------------*/
@@ -46,6 +46,8 @@ static int16_t Debug_Auido_Buf[STEREO_FRAME_SIZE];
 /*音频标志位*/
 static volatile int16_t *Current_Opt_Rec_Buf_Sel = Audio_Data_Rec_Buf;
 static volatile uint8_t Received_Ok_Flag = 0;
+/*串口句柄*/
+static Uart_Dev_Handle_t *Uart_Handle = NULL;
 /** Private function prototypes ----------------------------------------------*/
 /** Private user code --------------------------------------------------------*/
 
@@ -110,17 +112,20 @@ static void Test_Audio_Port_Put_Data(void)
   */
 static uint32_t Send_Data_Func_Port(uint8_t *Data, uint32_t Len)
 {
-  int16_t *Ptr = (int16_t *)Data;
-  /*分离左右通道数据*/
-  int16_t Left_Audio[MONO_FRAME_SIZE], Right_Audio[MONO_FRAME_SIZE];
-  int index = 0;
-  for(int i = 0; i < MONO_FRAME_SIZE; i++)
-  {
-    Left_Audio[i] = Ptr[index++];
-    Right_Audio[i] = Ptr[index++];
-  }
-  /*发送音频数据到USB*/ 
-  USB_Audio_Port_Put_Data(Left_Audio, Right_Audio, Len/sizeof(int16_t));
+//  int16_t *Ptr = (int16_t *)Data;
+//  /*分离左右通道数据*/
+//  int16_t Left_Audio[MONO_FRAME_SIZE], Right_Audio[MONO_FRAME_SIZE];
+//  int index = 0;
+//  for(int i = 0; i < MONO_FRAME_SIZE; i++)
+//  {
+//    Left_Audio[i] = Ptr[index++];
+//    Right_Audio[i] = Ptr[index++];
+//  }
+//  /*发送音频数据到USB*/ 
+//  USB_Audio_Port_Put_Data(Left_Audio, Right_Audio, Len/sizeof(int16_t));
+  
+  /*发送音频数据到串口*/
+  Uart_Port_Transmit_Data(Uart_Handle, Data, (uint16_t)Len, 0);
   return Len;
 }
 
@@ -216,10 +221,10 @@ void I2S_Audio_Port_Start(void)
     return;
   }
   /*加入音频到调试接口 -> USB*/
-  if(USB_Audio_Port_Can_Put_Data() == false)
-  {
-    return;
-  }
+//  if(USB_Audio_Port_Can_Put_Data() == false)
+//  {
+//    return;
+//  }
   Test_Audio_Port_Put_Data();
   Audio_Debug_Put_Data(Audio_Data_Send_Buf, &Audio_Data_Send_Buf[MONO_FRAME_SIZE], 0);
   Audio_Debug_Start();
@@ -228,6 +233,8 @@ void I2S_Audio_Port_Start(void)
 //  Test_Audio_Port_Put_Data();
 //  USB_Audio_Port_Put_Data(Audio_Data_Send_Buf, &Audio_Data_Send_Buf[MONO_FRAME_SIZE], STEREO_FRAME_SIZE);
   
+  /*发送音频数据到串口*/
+//  Uart_Port_Transmit_Data(Uart_Handle, Data, (uint16_t)Len, 0);
   Received_Ok_Flag = 0;
 }
 
@@ -245,6 +252,9 @@ void I2S_Audio_Port_Init(void)
 {
   /*正弦音频*/
   Sin_Audio_Init();
+  
+  /*获取串口句柄*/
+  Uart_Handle = Uart_Port_Get_Handle(UART_NUM_0);
   
   /*初始化音频调试接口*/
   Audio_Debug_Init((uint16_t *)Debug_Auido_Buf, Send_Data_Func_Port, Get_Idel_State_Port);

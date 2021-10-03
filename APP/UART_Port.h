@@ -23,7 +23,7 @@ extern "C" {
 /** Private includes ---------------------------------------------------------*/
 /** Exported defines ----------------------------------------------------------*/
 #define USE_FREERTOS    0
-#define USE_USB_CDC     0
+#define USE_USB_CDC     1
 /*外部接口*/
 #include "stm32F4xx_hal.h"
 #include "usart.h"

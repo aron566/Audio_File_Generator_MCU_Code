@@ -358,10 +358,10 @@
                     <state>$PROJ_DIR$/../USB_DEVICE/App</state>
                     <state>$PROJ_DIR$/../USB_DEVICE/Target</state>
                     <state>$PROJ_DIR$/../Middlewares/ST/STM32_USB_Device_Library/Core/Inc</state>
-                    <state>$PROJ_DIR$/../Middlewares/ST/STM32_USB_Device_Library/Class/AUDIO/Inc</state>
                     <state>$PROJ_DIR$\..\APP</state>
                     <state>$PROJ_DIR$\..\Utilities</state>
                     <state>$PROJ_DIR$\..\Main</state>
+                    <state>$PROJ_DIR$/../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1069,6 +1069,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\APP\USB_Audio_Port.c</name>
+            <excluded>
+                <configuration>STM32F407VET6_Audio_Tool</configuration>
+            </excluded>
         </file>
     </group>
     <group>
@@ -1119,7 +1122,7 @@
                         <name>$PROJ_DIR$\..\USB_DEVICE\App\usb_device.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\USB_DEVICE\App\usbd_audio_if.c</name>
+                        <name>$PROJ_DIR$\..\USB_DEVICE\App\usbd_cdc_if.c</name>
                     </file>
                     <file>
                         <name>$PROJ_DIR$\..\USB_DEVICE\App\usbd_desc.c</name>
@@ -1223,7 +1226,7 @@
         <group>
             <name>USB_Device_Library</name>
             <file>
-                <name>$PROJ_DIR$\..\Middlewares\ST\STM32_USB_Device_Library\Class\AUDIO\Src\usbd_audio.c</name>
+                <name>$PROJ_DIR$\..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Src\usbd_cdc.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Middlewares\ST\STM32_USB_Device_Library\Core\Src\usbd_core.c</name>
