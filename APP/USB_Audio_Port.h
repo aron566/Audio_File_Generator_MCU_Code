@@ -89,6 +89,8 @@ extern "C" {
 
 /*向USB缓冲区数据加入数据*/
 void USB_Audio_Port_Put_Data(const int16_t *Left_Audio, const int16_t *Right_Audio, int Size);
+/*是否可以更新音频数据*/
+bool USB_Audio_Port_Can_Put_Data(void);
 /*初始化音频输出端点*/
 uint8_t USB_Audio_Port_EP_IN_Init(void *xpdev, uint8_t cfgidx);
 /*初始化音频输入端点*/

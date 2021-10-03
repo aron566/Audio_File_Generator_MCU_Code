@@ -216,12 +216,13 @@ void I2S_Audio_Port_Start(void)
     return;
   }
   /*加入音频到调试接口 -> USB*/
+  if(USB_Audio_Port_Can_Put_Data() == false)
+  {
+    return;
+  }
   Test_Audio_Port_Put_Data();
   Audio_Debug_Put_Data(Audio_Data_Send_Buf, &Audio_Data_Send_Buf[MONO_FRAME_SIZE], 0);
-  if(Audio_Debug_Start() == false)
-  {
-    while(1);
-  }
+  Audio_Debug_Start();
   
   /*取出音频数据给USB*/
 //  Test_Audio_Port_Put_Data();

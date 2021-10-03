@@ -79,10 +79,6 @@ static void USB_Audio_Port_Init(void)
   */
 static inline void USB_Audio_Port_Put_Audio_Data(const int16_t *Data, uint32_t Size)
 {
-  if(CQ_getLength(&USB_Audio_Data_Handle) == USB_RX_BUF_SIZE_MAX)
-  {
-    CQ_ManualOffsetInc(&USB_Audio_Data_Handle, USB_PORT_AUDIO_OUT_PACKET/2);
-  }
   CQ_16putData(&USB_Audio_Data_Handle, (const uint16_t *)Data, Size);
 }
 
@@ -178,6 +174,7 @@ uint8_t USB_Audio_Port_DataIn(void *xpdev, uint8_t epnum)
   USBD_AUDIO_HandleTypeDef *haudio = (USBD_AUDIO_HandleTypeDef*) pdev->pClassData;
   
 	USBD_LL_FlushEP(pdev, USB_PORT_AUDIO_IN_EP);
+  
   if(CQ_getLength(&USB_Audio_Data_Handle) < USB_PORT_AUDIO_OUT_PACKET/2)
   {
     return (uint8_t)USBD_BUSY;
@@ -387,6 +384,25 @@ void USB_Audio_Port_Put_Data(const int16_t *Left_Audio, const int16_t *Right_Aud
   }
   
   USB_Audio_Port_Put_Audio_Data(USB_Audio_Receive_Buf, Size);
+}
+
+/**
+  ******************************************************************
+  * @brief   是否可以更新音频数据
+  * @param   [in]None.
+  * @return  true 可以.
+  * @author  aron566
+  * @version V1.0
+  * @date    2021-10-03
+  ******************************************************************
+  */
+bool USB_Audio_Port_Can_Put_Data(void)
+{
+  if(USB_Audio_Data_Handle.size - CQ_getLength(&USB_Audio_Data_Handle) >= STEREO_FRAME_SIZE)
+  {
+    return true;
+  }
+  return false;
 }
 
 #ifdef __cplusplus ///<end extern c
