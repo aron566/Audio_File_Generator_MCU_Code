@@ -1,7 +1,7 @@
 /**
- *  @file User_Main.h
+ *  @file SPI_Audio_Port.h
  *
- *  @date 2021/10/1
+ *  @date 2021/10/7
  *
  *  @author Copyright (c) 2021 aron566 <aron566@163.com>.
  *
@@ -9,8 +9,8 @@
  *  
  *  @version v1.0
  */
-#ifndef USER_MAIN_H
-#define USER_MAIN_H
+#ifndef SPI_AUDIO_PORT_H
+#define SPI_AUDIO_PORT_H
 /** Includes -----------------------------------------------------------------*/
 #include <stdint.h> /*need definition of uint8_t*/
 #include <stddef.h> /*need definition of NULL*/
@@ -20,10 +20,6 @@
 #include <string.h>
 #include <limits.h> /**< if need INT_MAX*/
 /** Private includes ---------------------------------------------------------*/
-#include "CircularQueue.h"
-#include "SPI_Audio_Port.h"
-#include "Timer_Port.h"
-#include "UART_Port.h"
 /* Use C compiler ------------------------------------------------------------*/
 #ifdef __cplusplus ///< use C compiler
 extern "C" {
@@ -34,13 +30,17 @@ extern "C" {
 
 /** Exported constants -------------------------------------------------------*/
 /** Exported macros-----------------------------------------------------------*/
+#define MONO_FRAME_SIZE                       128
+#define STEREO_FRAME_SIZE                     (MONO_FRAME_SIZE*2U)  
 /** Exported variables -------------------------------------------------------*/
 /** Exported functions prototypes --------------------------------------------*/
 
-/*初始化入口*/
-void User_Main_Init(void);
-/*主循环入口*/
-void User_Main_Loop(void);
+/*音频接口初始化*/
+void SPI_Audio_Port_Init(void);
+/*音频接口启动*/
+void SPI_Audio_Port_Start(void);
+/*音频接口任务使能*/
+void SPI_Audio_Port_Task_Start(void);
 
 #ifdef __cplusplus ///<end extern c
 }

@@ -1060,6 +1060,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\APP\I2S_Audio_Port.c</name>
+      <excluded>
+        <configuration>STM32F407VET6_Audio_Tool</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\APP\SPI_Audio_Port.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\APP\Timer_Port.c</name>
