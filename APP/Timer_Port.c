@@ -83,7 +83,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if(htim->Instance == TIM1)
   {
     /*音频接口启动*/
-    I2S_Audio_Port_Task_Start();
+    SPI_Audio_Port_Task_Start();
   }
 }
 

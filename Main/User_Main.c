@@ -58,7 +58,7 @@ void User_Main_Loop(void)
   Timer_Port_Start();
   
   /*音频接口启动*/
-  I2S_Audio_Port_Start();
+  SPI_Audio_Port_Start();
 }
 
 /**
@@ -80,7 +80,7 @@ void User_Main_Init(void)
   Timer_Port_Init();
   
   /*音频接口初始化*/
-  I2S_Audio_Port_Init();
+  SPI_Audio_Port_Init();
 }
 
 #ifdef __cplusplus ///<end extern c
